@@ -14,7 +14,6 @@ class MyView(tk.Tk):
         self.columnconfigure(3, weight=1)
         self.rowconfigure(1, weight=1)
 
-
         ################################################ menu
         # style
         style_frame = ttk.Style(self)
@@ -64,3 +63,6 @@ class MyView(tk.Tk):
 
     def set_controller(self, value):
         self.controller = value
+
+    def success_message(self, message: str):
+        messagebox.showinfo("confirmation notepad", message)
