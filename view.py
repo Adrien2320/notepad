@@ -25,7 +25,7 @@ class MyView(tk.Tk):
         style_exit.configure("exit.TButton", background="gray", foreground="red")
         # widget
         self.save = ttk.Button(
-            self, text="Sauvegarder", command=MyView.do_save, style="save.TButton"
+            self, text="Sauvegarder", style="save.TButton", command=self.do_save
         )
         self.exit = ttk.Button(
             self, text="Quitter", command=self.destroy, style="exit.TButton"
@@ -54,7 +54,7 @@ class MyView(tk.Tk):
         try:
             self.controller.save(self.text)
         except AttributeError:
-            self.error_message("Erreur Controller")
+            self.error_message("Erreur Controller !")
 
     def error_message(self, message: str) -> None:
         messagebox.showerror("Erreur Notepad", message)
