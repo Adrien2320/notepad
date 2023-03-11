@@ -1,49 +1,63 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import tkinter.constants as ctk
+from tkinter import messagebox
 
 
 class MyView(tk.Tk):
-
     def __init__(self, title: str):
         super().__init__()
         self.title(title)
-        self.columnconfigure()
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        self.columnconfigure(2, weight=1)
+        self.columnconfigure(3, weight=1)
+        self.rowconfigure(1, weight=1)
 
-        self.menu = ttk.Frame(self,style="my.TFrame")
-        self.menu.grid(column=0,row=0,sticky=ctk.NSEW)
+
+        ################################################ menu
         # style
         style_frame = ttk.Style(self)
-        style_frame.configure("my.TFrame",background="gray")
+        style_frame.configure("test.TLabel", background="gray")
         style_save = ttk.Style(self)
-        style_save.configure("save.TButton",background ="gray", foreground="green")
+        style_save.configure("save.TButton", background="gray", foreground="green")
         style_exit = ttk.Style(self)
-        style_exit.configure("exit.TButton",background ="gray", foreground="red")
+        style_exit.configure("exit.TButton", background="gray", foreground="red")
         # widget
-        self.save = ttk.Button(self.menu, text="Sauvegarder", command=MyView.do_save,style="save.TButton")
-        self.exit = ttk.Button(self.menu, text="Quitter", command=MyView.do_exit, style="exit.TButton")
+        self.save = ttk.Button(
+            self, text="Sauvegarder", command=MyView.do_save, style="save.TButton"
+        )
+        self.exit = ttk.Button(
+            self, text="Quitter", command=self.destroy, style="exit.TButton"
+        )
         # position
-        self.save.pack(side=ctk.LEFT,padx=2)
-        self.exit.pack(side=ctk.LEFT)
-
-    class Text(tk.Text):
-        def __init__(self,parent):
-            super().__init__(parent)
-            self.pack()
-
-    class BottomBar(ttk.Frame):
-        def __init__(self,parent):
-            super().__init__(parent)
-            self.pack(side=ctk.BOTTOM)
+        self.save.grid(columnspan=2, row=0, sticky=ctk.NSEW)
+        self.exit.grid(column=2, columnspan=2, row=0, sticky=ctk.NSEW)
+        ################################################ text
+        self.text = tk.Text(self)
+        self.text.grid(columnspan=4, row=1, sticky=ctk.NSEW)
+        self.scrollbar_ver = ttk.Scrollbar(self, orient=ctk.VERTICAL)
+        self.scrollbar_ver.grid(column=4, row=1, sticky=ctk.E)
+        self.scrollbar_hor = ttk.Scrollbar(self, orient=ctk.HORIZONTAL)
+        self.scrollbar_hor.grid(columnspan=5, row=2, sticky=ctk.S)
+        ################################################ bottom bar
+        self.position_text = ttk.Label(self, text="position")
+        self.position_text.grid(column=0, row=3, sticky=ctk.W)
+        self.zoom_text = ttk.Label(self, text="zoom")
+        self.zoom_text.grid(column=1, row=3, sticky=ctk.E)
+        self.encoding = ttk.Label(self, text="encoding")
+        self.encoding.grid(column=2, row=3, sticky=ctk.E)
+        self.format_text = ttk.Label(self, text="format")
+        self.format_text.grid(column=3, row=3, sticky=ctk.E)
 
     def do_save(self):
-        pass
+        try:
+            self.controller.save(self.text)
+        except AttributeError:
+            self.error_message("Erreur Controller")
 
-    def do_exit(self):
-        pass
-
-    def show_message(self, message: str, color: str) -> None:
-        pass
+    def error_message(self, message: str) -> None:
+        messagebox.showerror("Erreur Notepad", message)
 
     def start_my_view(self) -> None:
         self.mainloop()
