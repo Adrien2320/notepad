@@ -35,10 +35,11 @@ class MyView(tk.Tk):
         ################################################ text
         self.text = tk.Text(self)
         self.text.grid(columnspan=4, row=1, sticky=ctk.NSEW)
-        self.scrollbar_ver = ttk.Scrollbar(self, orient=ctk.VERTICAL)
-        self.scrollbar_ver.grid(column=4, row=1, sticky=ctk.E)
-        self.scrollbar_hor = ttk.Scrollbar(self, orient=ctk.HORIZONTAL)
-        self.scrollbar_hor.grid(columnspan=5, row=2, sticky=ctk.S)
+        scrollbar_ver = ttk.Scrollbar(self, orient=ctk.VERTICAL,command=self.text.yview)
+        scrollbar_ver.grid(column=4, row=1, sticky=ctk.E)
+        scrollbar_hor = ttk.Scrollbar(self, orient=ctk.HORIZONTAL,command=self.text.xview)
+        scrollbar_hor.grid(columnspan=5, row=2, sticky=ctk.S)
+        self.text.configure(yscrollcommand=scrollbar_ver.set,xscrollcommand=scrollbar_hor.set)
         ################################################ bottom bar
         self.position_text = ttk.Label(self, text="position")
         self.position_text.grid(column=0, row=3, sticky=ctk.W)
@@ -51,7 +52,7 @@ class MyView(tk.Tk):
 
     def do_save(self):
         try:
-            self.controller.save(self.text)
+            self.controller.save(self.text.get(1.0,ctk.END))
         except AttributeError:
             self.error_message("Erreur Controller !")
 
