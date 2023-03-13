@@ -1,63 +1,43 @@
-import tkinter as tk
-import tkinter.ttk as ttk
-import tkinter.constants as ctk
-from tkinter import messagebox
+import ttkbootstrap as ttk
+import ttkbootstrap.constants as cttk
+from ttkbootstrap.scrolled import ScrolledText
 
 
-class MyView(tk.Tk):
-    def __init__(self, title: str):
-        super().__init__()
-        self.title(title)
+class MyView(ttk.Window):
+    def __init__(self):
+        super().__init__(themename="superhero")
+
+        self.menu = Menu(self)
+        self.block_note = BlockNote(self)
         self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
-        self.columnconfigure(2, weight=1)
-        self.columnconfigure(3, weight=1)
         self.rowconfigure(1, weight=1)
 
-        ################################################ menu
-        # style
-        style_frame = ttk.Style(self)
-        style_frame.configure("test.TLabel", background="gray")
-        style_save = ttk.Style(self)
-        style_save.configure("save.TButton", background="gray", foreground="green")
-        style_exit = ttk.Style(self)
-        style_exit.configure("exit.TButton", background="gray", foreground="red")
-        # widget
-        self.save = ttk.Button(
-            self, text="Sauvegarder", style="save.TButton", command=self.do_save
-        )
-        self.exit = ttk.Button(
-            self, text="Quitter", command=self.destroy, style="exit.TButton"
-        )
-        # position
-        self.save.grid(columnspan=2, row=0, sticky=ctk.NSEW)
-        self.exit.grid(column=2, columnspan=2, row=0, sticky=ctk.NSEW)
-        ################################################ text
-        self.text = tk.Text(self)
-        self.text.grid(columnspan=4, row=1, sticky=ctk.NSEW)
-        scrollbar_ver = ttk.Scrollbar(self, orient=ctk.VERTICAL,command=self.text.yview)
-        scrollbar_ver.grid(column=4, row=1, sticky=ctk.E)
-        scrollbar_hor = ttk.Scrollbar(self, orient=ctk.HORIZONTAL,command=self.text.xview)
-        scrollbar_hor.grid(columnspan=5, row=2, sticky=ctk.S)
-        self.text.configure(yscrollcommand=scrollbar_ver.set,xscrollcommand=scrollbar_hor.set)
-        ################################################ bottom bar
-        self.position_text = ttk.Label(self, text="position")
-        self.position_text.grid(column=0, row=3, sticky=ctk.W)
-        self.zoom_text = ttk.Label(self, text="zoom")
-        self.zoom_text.grid(column=1, row=3, sticky=ctk.E)
-        self.encoding = ttk.Label(self, text="encoding")
-        self.encoding.grid(column=2, row=3, sticky=ctk.E)
-        self.format_text = ttk.Label(self, text="format")
-        self.format_text.grid(column=3, row=3, sticky=ctk.E)
+        self.menu.grid(column=0, row=0, sticky=cttk.EW)
+        self.block_note.grid(column=0, row=1, sticky=cttk.NSEW)
 
-    def do_save(self):
-        try:
-            self.controller.save(self.text.get(1.0,ctk.END))
-        except AttributeError:
-            self.error_message("Erreur Controller !")
+    def file_title(self):
+        pass
+
+    def apropos(self):
+        pass
+
+    def exit(self):
+        pass
+
+    def new(self):
+        pass
+
+    def open(self):
+        pass
+
+    def save(self):
+        pass
+
+    def save_as(self):
+        pass
 
     def error_message(self, message: str) -> None:
-        messagebox.showerror("Erreur Notepad", message)
+        pass
 
     def start_my_view(self) -> None:
         self.mainloop()
@@ -66,4 +46,41 @@ class MyView(tk.Tk):
         self.controller = value
 
     def success_message(self, message: str):
-        messagebox.showinfo("confirmation notepad", message)
+        pass
+
+
+class Menu(ttk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        # icon for button
+        self.picture_new = ttk.PhotoImage(file="picture/new.png")
+        self.picture_save = ttk.PhotoImage(file="picture/save.png")
+        self.picture_save_as = ttk.PhotoImage(file="picture/save_as.png")
+        self.picture_open = ttk.PhotoImage(file="picture/open.png")
+        self.picture_information = ttk.PhotoImage(file="picture/information.png")
+        self.picture_exit = ttk.PhotoImage(file="picture/exit.png")
+        # widget
+        self.bt_new = ttk.Button(self, image=self.picture_new)
+        self.bt_save = ttk.Button(self, image=self.picture_save)
+        self.bt_save_as = ttk.Button(self, image=self.picture_save_as)
+        self.bt_open = ttk.Button(self, image=self.picture_open)
+        self.bt_information = ttk.Button(self, image=self.picture_information)
+        self.bt_exit = ttk.Button(self, image=self.picture_exit)
+        # position
+        self.bt_new.pack(side=cttk.LEFT)
+        self.bt_save.pack(side=cttk.LEFT)
+        self.bt_save_as.pack(side=cttk.LEFT)
+        self.bt_open.pack(side=cttk.LEFT)
+        self.bt_exit.pack(side=cttk.RIGHT)
+        self.bt_information.pack(side=cttk.RIGHT)
+
+
+class BlockNote(ttk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.text = ScrolledText(self, hbar=True)
+        self.text.pack(fill=cttk.BOTH, expand=True)
+
+
+if __name__ == "__main__":
+    MyView().start_my_view()
