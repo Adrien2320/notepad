@@ -1,6 +1,9 @@
 import ttkbootstrap as ttk
 import ttkbootstrap.constants as cttk
+from tkinter import filedialog
 from ttkbootstrap.scrolled import ScrolledText
+from tkinter import messagebox
+
 
 
 class MyView(ttk.Window):
@@ -16,24 +19,6 @@ class MyView(ttk.Window):
         self.block_note.grid(column=0, row=1, sticky=cttk.NSEW)
 
     def file_title(self):
-        pass
-
-    def apropos(self):
-        pass
-
-    def exit(self):
-        pass
-
-    def new(self):
-        pass
-
-    def open(self):
-        pass
-
-    def save(self):
-        pass
-
-    def save_as(self):
         pass
 
     def error_message(self, message: str) -> None:
@@ -64,8 +49,8 @@ class Menu(ttk.Frame):
         self.bt_save = ttk.Button(self, image=self.picture_save)
         self.bt_save_as = ttk.Button(self, image=self.picture_save_as)
         self.bt_open = ttk.Button(self, image=self.picture_open)
-        self.bt_information = ttk.Button(self, image=self.picture_information)
-        self.bt_exit = ttk.Button(self, image=self.picture_exit)
+        self.bt_information = ttk.Button(self, image=self.picture_information,command=self.who_editor)
+        self.bt_exit = ttk.Button(self, image=self.picture_exit,command=self.do_exit)
         # position
         self.bt_new.pack(side=cttk.LEFT)
         self.bt_save.pack(side=cttk.LEFT)
@@ -73,6 +58,24 @@ class Menu(ttk.Frame):
         self.bt_open.pack(side=cttk.LEFT)
         self.bt_exit.pack(side=cttk.RIGHT)
         self.bt_information.pack(side=cttk.RIGHT)
+        # methode for command button
+    def do_exit(self):
+        if messagebox.askyesno("Fermeture Application","confirmation de fermeture") :
+            exit()
+    def who_editor(self):
+        messagebox.showinfo("information","créateur Adrien Mertens \n GitHub : https://github.com/Adrien2320 ")
+
+    def do_new(self):
+        pass
+
+    def do_open(self):
+        pass
+
+    def do_save(self):
+        pass
+
+    def save_as(self):
+        pass
 
 
 class BlockNote(ttk.Frame):
